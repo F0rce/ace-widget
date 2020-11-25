@@ -1,6 +1,6 @@
 {
   "name": "@f0rce/ace-widget",
-  "description": "F0rce's Backend Vaadin integration of LostInBrittany's Ace (http://ace.c9.io/) widget",
+  "description": "Frontend Vaadin integration of LostInBrittany's Ace (http://ace.c9.io/) widget",
   "keywords": [
     "web-component",
     "web-components",
@@ -37,5 +37,5 @@
     "wct-browser-legacy": "^0.0.1-pre.11",
     "@webcomponents/webcomponentsjs": "^2.0.0"
   },
-  "version": "1.0.0-b1"
+  "version": "1.0.0-b2"
 }
