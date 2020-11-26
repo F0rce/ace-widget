@@ -15,9 +15,9 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 import { PolymerElement, html } from "@polymer/polymer/polymer-element.js";
 
-import "ace-builds/src-min-noconflict/ace.js";
-import "ace-builds/src-min-noconflict/ext-language_tools.js";
-import "ace-builds/src-min-noconflict/snippets/snippets.js";
+import "ace-builds/src-noconflict/ace.js";
+import "ace-builds/src-noconflict/ext-language_tools.js";
+import "ace-builds/src-noconflict/snippets/snippets.js";
 
 var editorFocus = function () {
   var _self = this;
@@ -631,11 +631,12 @@ class AceWidget extends PolymerElement {
   }
 
   refreshChanged() {
-    console.error("refresh changed");
-    console.error(`firstRun: ${this.firstRun}`);
-    if (this.firstRun) return;
+    if (this.editor == undefined) return;
+    if (this.firstRun) {
+      this.firstRun = false;
+      return; 
+    } 
     this.initializeEditor();
-    this.firstRun = false;
   }
 
   /**
@@ -650,6 +651,4 @@ class AceWidget extends PolymerElement {
   }
 }
 
-if (!window.customElements.get(AceWidget.is)) {
-  customElements.define(AceWidget.is, AceWidget);
-}
+customElements.define(AceWidget.is, AceWidget);
