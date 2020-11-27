@@ -220,7 +220,8 @@ class AceWidget extends PolymerElement {
       },
       refresh: {
         type: String,
-        observer: "refreshChanged",
+        value: "",
+        observer: "refreshEditor",
       },
       firstRun: {
         type: Boolean,
@@ -267,10 +268,10 @@ class AceWidget extends PolymerElement {
       })
     );
     // console.debug("[ace-widget] connectedCallback done, initializing")
-    this.initializeEditor("");
+    this.initializeEditor();
   }
 
-  initializeEditor(editorValue) {
+  initializeEditor() {
     let editor = this.editor;
 
     this.head = document.head;
@@ -287,8 +288,8 @@ class AceWidget extends PolymerElement {
 
     this.themeChanged();
 
-    this.editorValue = editorValue;
-    this._selection = "0|0|0|0|-";
+    this.editorValue = "";
+    this._selection = this.selection;
     editor.setOption("enableSnippets", this.enableSnippets);
     editor.setOption("enableBasicAutocompletion", this.enableAutocompletion);
     editor.setOption("enableLiveAutocompletion", this.enableLiveAutocompletion);
@@ -366,6 +367,41 @@ class AceWidget extends PolymerElement {
     this.firstRun = false;
   }
 
+  refreshEditor() {
+    if (this.firstRun = true) {
+      return;
+    }
+
+    editor.setOption("enableSnippets", this.enableSnippets);
+    editor.setOption("enableBasicAutocompletion", this.enableAutocompletion);
+    editor.setOption("enableLiveAutocompletion", this.enableLiveAutocompletion);
+    editor.setOption("showGutter", this.showGutter);
+
+    // Forcing a xyzChanged() call to refresh the editor after changing the visibility
+    this.themeChanged();
+    this.readonlyChanged();
+    this.wrapChanged();
+    this.tabSizeChanged();
+    this.modeChanged();
+    this.softtabsChanged();
+    this.fontSizeChanged();
+    this.selectionChanged();
+    this.customAutoCompletionChanged();
+    this.markerChanged();
+    this.highlightActiveLineChanged();
+    this.highlightSelectedWordChanged();
+
+    editor.setShowPrintMargin(this.showPrintMargin);
+    editor.setShowInvisibles(this.showInvisibles);
+    editor.setDisplayIndentGuides(this.displayIndentGuides);
+    editor.getSession().setUseWorker(this.useWorker);
+
+    editor.setOptions({
+      minLines: this.minlines,
+      maxLines: this.maxlines,
+    });
+  }
+
   fontSizeChanged() {
     if (this.editor == undefined) {
       return;
@@ -374,7 +410,9 @@ class AceWidget extends PolymerElement {
   }
 
   modeChanged() {
-    if (!this.editor) return;
+    if (this.editor == undefined) {
+      return;
+    }
     this.editor.getSession().setMode("ace/mode/" + this.mode);
   }
 
@@ -390,7 +428,6 @@ class AceWidget extends PolymerElement {
       return;
     }
     this.editor.setTheme("ace/theme/" + this.theme);
-    return;
   }
 
   valueChanged() {
@@ -628,15 +665,6 @@ class AceWidget extends PolymerElement {
 
     const set = rowFrom + "|" + from + "|" + rowTo + "|" + to + "|-";
     this._selection = set;
-  }
-
-  refreshChanged() {
-    if (this.editor == undefined) return;
-    if (this.firstRun) {
-      this.firstRun = false;
-      return;
-    }
-    this.initializeEditor(this.editorValue);
   }
 
   /**

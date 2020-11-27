@@ -11,7 +11,7 @@ custom Vaadin widget - [Ace](http://ace.c9.io/) - The High Performance Code Edit
 
 ## Install
 
-Install the component using [Vaadin Directory]https://vaadin.com/directory/component/ace-widget1):
+Install the component using [Vaadin Directory](https://vaadin.com/directory/component/ace-widget1):
 
 ```xml
 <dependency>
