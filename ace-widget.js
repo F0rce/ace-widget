@@ -267,10 +267,10 @@ class AceWidget extends PolymerElement {
       })
     );
     // console.debug("[ace-widget] connectedCallback done, initializing")
-    this.initializeEditor();
+    this.initializeEditor("");
   }
 
-  initializeEditor() {
+  initializeEditor(editorValue) {
     let editor = this.editor;
 
     this.head = document.head;
@@ -287,7 +287,7 @@ class AceWidget extends PolymerElement {
 
     this.themeChanged();
 
-    this.editorValue = "";
+    this.editorValue = editorValue;
     this._selection = "0|0|0|0|-";
     editor.setOption("enableSnippets", this.enableSnippets);
     editor.setOption("enableBasicAutocompletion", this.enableAutocompletion);
@@ -634,9 +634,9 @@ class AceWidget extends PolymerElement {
     if (this.editor == undefined) return;
     if (this.firstRun) {
       this.firstRun = false;
-      return; 
-    } 
-    this.initializeEditor();
+      return;
+    }
+    this.initializeEditor(this.editorValue);
   }
 
   /**
